@@ -40,12 +40,17 @@
 
 #pragma mark - Initalizers
 - (instancetype)initWithTitle:(NSString *)title message:(NSString *)message view:(UIView *)view {
+    return [self initWithTitle:title message:message view:view backgroundView:nil];
+}
+
+- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message view:(UIView *)view backgroundView:(UIView *)backgroundView {
     self = [super init];
     if (self) {
         self.alertConfig = [URBNAlertConfig new];
         self.alertConfig.title = title;
         self.alertConfig.message = message;
         self.customView = view;
+        self.backgroundView = backgroundView;
         self.alertController = [URBNAlertController sharedInstance];
         self.alertStyler = [self.alertController.alertStyler copy];
     }
@@ -158,7 +163,7 @@
 }
 
 - (void)show {
-    self.alertView = [[URBNAlertView alloc] initWithAlertConfig:self.alertConfig alertStyler:self.alertStyler customView:self.customView];
+    self.alertView = [[URBNAlertView alloc] initWithAlertConfig:self.alertConfig alertStyler:self.alertStyler customView:self.customView  backgroundView:self.backgroundView];
     self.alertView.alpha = 0;
     self.alertView.translatesAutoresizingMaskIntoConstraints = NO;
     
@@ -194,6 +199,7 @@
     [self.view addConstraint:self.yPosConstraint];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.alertView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
     
+    [self.backgroundView setFrame:self.alertView.bounds];
     [self.alertController addAlertToQueueWithAlertViewController:self];
 }
 

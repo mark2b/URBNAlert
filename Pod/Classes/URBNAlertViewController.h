@@ -31,6 +31,18 @@ typedef void(^URBNAlertViewControllerFinishedDismissing)(BOOL wasTouchedOutside)
 - (instancetype)initWithTitle:(NSString *)title message:(NSString *)message view:(UIView *)view;
 
 /**
+ *  Initialize with a title and/or message, as well as a customView if desired
+ *
+ *  @param title            Optional. The title text displayed in the alert
+ *  @param message          Optional. The message text displayed in the alert
+ *  @param view             The custom UIView you wish to display in the alert
+ *  @param backgroundView   The custom background UIView you wish to display in the alert
+ *
+ *  @return A URBNAlertViewController ready to be configurated further or displayed
+ */
+- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message view:(UIView *)view backgroundView:(UIView *)backgroundView;
+
+/**
  *  Initialize with a title and/or message
  *
  *  @param title   Optional. The title text displayed in the alert
@@ -59,6 +71,11 @@ typedef void(^URBNAlertViewControllerFinishedDismissing)(BOOL wasTouchedOutside)
  *  The customView displayed in the alert, if passed
  */
 @property (nonatomic, strong) UIView *customView;
+
+/**
+ *  The backgroundView displayed in the alert, if passed
+ */
+@property (nonatomic, strong) UIView *backgroundView;
 
 /**
  *  Use this method to show a created/configurated URBNAlertViewController.

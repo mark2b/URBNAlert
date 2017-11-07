@@ -21,6 +21,8 @@ typedef void(^URBNAlertViewTouched)(URBNAlertAction *action);
 
 - (instancetype)initWithAlertConfig:(URBNAlertConfig *)config alertStyler:(URBNAlertStyle *)alertStyler customView:(UIView *)customView;
 
+- (instancetype)initWithAlertConfig:(URBNAlertConfig *)config alertStyler:(URBNAlertStyle *)alertStyler customView:(UIView *)customView backgroundView:(UIView *)backgroundView;
+
 - (void)setErrorLabelText:(NSString *)errorText;
 - (void)setLoadingState:(BOOL)newState forTextFieldAtIndex:(NSUInteger)index;
 

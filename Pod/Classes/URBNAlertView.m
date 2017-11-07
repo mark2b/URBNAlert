@@ -56,6 +56,7 @@ static NSInteger const kURBNAlertViewHeightPadding = 80.f;
 @property (nonatomic, strong) UITextView *messageTextView;
 @property (nonatomic, strong) UILabel *errorLabel;
 @property (nonatomic, strong) UIView *customView;
+@property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, copy) NSArray *buttons;
 @property (nonatomic, assign) NSInteger sectionCount;
 
@@ -64,11 +65,24 @@ static NSInteger const kURBNAlertViewHeightPadding = 80.f;
 @implementation URBNAlertView
 
 - (instancetype)initWithAlertConfig:(URBNAlertConfig *)config alertStyler:(URBNAlertStyle *)alertStyler customView:(UIView *)customView {
+    return [self initWithAlertConfig:config alertStyler:alertStyler customView:customView backgroundView:nil];
+}
+
+- (instancetype)initWithAlertConfig:(URBNAlertConfig *)config alertStyler:(URBNAlertStyle *)alertStyler customView:(UIView *)customView backgroundView:(UIView *)backgroundView {
     self = [super init];
     if (self) {
         self.alertConfig = config;
         self.alertStyler = alertStyler;
-        
+
+        if (!backgroundView) {
+            self.backgroundView = [UIView new];
+        }
+        else {
+            self.backgroundView = backgroundView;
+            
+        }
+        self.backgroundView.translatesAutoresizingMaskIntoConstraints = YES;
+
         if (!customView) {
             // Give it a dummy view
             self.customView = [UIView new];
@@ -97,11 +111,12 @@ static NSInteger const kURBNAlertViewHeightPadding = 80.f;
         
         NSDictionary *views;
         
+        [self addSubview:self.backgroundView];
         [self addSubview:self.titleLabel];
         [self addSubview:self.messageTextView];
         [self addSubview:self.errorLabel];
         [self addSubview:self.customView];
-        
+
         NSMutableDictionary *mutableViews = [NSMutableDictionary dictionaryWithDictionary:@{@"_customView" : _customView, @"_titleLabel" : _titleLabel, @"_messageTextView" : _messageTextView, @"buttonContainer" : buttonContainer, @"_errorLabel" : _errorLabel}];
         
         if (self.alertConfig.inputs && self.alertConfig.inputs.count > 0) {
@@ -175,7 +190,7 @@ static NSInteger const kURBNAlertViewHeightPadding = 80.f;
             lbl.translatesAutoresizingMaskIntoConstraints = NO;
             [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-lblHMargin-[lbl]-lblHMargin-|" options:0 metrics:metrics views:NSDictionaryOfVariableBindings(lbl)]];
         }
-        
+
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-cvMargin-[_customView]-cvMargin-|" options:0 metrics:metrics views:views]];
         
         if (!self.alertConfig.inputs && self.alertConfig.inputs.count == 0) {
